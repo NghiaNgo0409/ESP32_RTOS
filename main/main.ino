@@ -4,6 +4,7 @@
 // Define your tasks here
 void TaskBlink(void *pvParameters);
 void TaskTemperatureHumidity(void *pvParameters);
+void TaskSoilMoistureAndRelay(void *pvParameters);
 
 //Define your components here
 Adafruit_NeoPixel pixels3(4, D3, NEO_GRB + NEO_KHZ800);
@@ -20,6 +21,7 @@ void setup() {
   
   xTaskCreate( TaskBlink, "Task Blink" ,2048  ,NULL  ,2 , NULL);
   xTaskCreate( TaskTemperatureHumidity, "Task Temperature" ,2048  ,NULL  ,2 , NULL);
+  xTaskCreate( TaskSoilMoistureAndRelay, "Task Soil & Moisture" ,2048  ,NULL  ,2 , NULL);
   
   //Now the task scheduler is automatically started.
   Serial.printf("Basic Multi Threading Arduino Example\n");
@@ -68,5 +70,27 @@ void TaskTemperatureHumidity(void *pvParameters) {  // This is a task.
     lcd.print(dht20.getHumidity());
 
     delay(5000);
+  }
+}
+
+void TaskSoilMoistureAndRelay(void *pvParameters) {  // This is a task.
+
+  while(1) {                          
+    Serial.println("Task Soild and Relay");
+
+    pinMode(D3, OUTPUT);
+
+    while(1) {                          
+    Serial.println("Task Soild and Relay");
+    Serial.println(analogRead(A0));
+    
+    if(analogRead(A0) > 50){
+      digitalWrite(D3, LOW);
+    }
+    if(analogRead(A0) < 30){
+      digitalWrite(D3, HIGH);
+    }
+    delay(1000);
+  }
   }
 }
