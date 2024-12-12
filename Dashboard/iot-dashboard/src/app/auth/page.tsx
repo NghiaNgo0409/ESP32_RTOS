@@ -17,12 +17,12 @@ export default async function page() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#111627] to-[#344378]" />
             <div className="relative z-20 flex items-center text-lg font-medium">
               <Icons.sunset className="h-20 w-20" />
-              Seawater Quality Monitor
+              ESP32-S3 Sensors Monitor
             </div>
             <div className="relative z-20 mt-auto">
               <blockquote className="space-y-2">
                 <p className="text-lg">
-                  &ldquo;Get real-time seawater quality updates with our advanced monitoring system in Xuan Dai Bay, Phu Yen Province, ensuring you stay informed about key water conditions and make timely decisions to protect the marine environment.&rdquo;
+                  &ldquo;Get real-time sensors values updates from ESP32-S3 and ThingsBoard.&rdquo;
                 </p>
                 <footer className="text-sm pt-3">
                   Made with ♡ by Nghia Ngo

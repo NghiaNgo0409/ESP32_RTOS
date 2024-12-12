@@ -29,10 +29,10 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export function Footer() {
-  const [pH, setPH] = useState(0)
-  const [ORP, setORP] = useState(0)
-  const [TUR, setTUR] = useState(0)
-  const [EC, setEC] = useState(0)
+  const [temperature, setTemperature] = useState(0)
+  const [humidity, setHumidity] = useState(0)
+  const [soil, setSoil] = useState(0)
+  const [light, setLight] = useState(0)
 
   const [switchState, setSwitchState] = useState<boolean>(false)
   const prevSwitchState = useRef<boolean>()
@@ -115,17 +115,18 @@ export function Footer() {
           webSocket.onmessage = (event) => {
             const receivedData = JSON.parse(event.data)
             const { subscriptionId, data } = receivedData
-            if (data?.pH?.length > 0) {
-              setPH(data.pH[0][1])
+            console.log('data >>>>', data)
+            if (data?.temperature?.length > 0) {
+              setTemperature(+(Math.round(data.temperature[0][1] * 100) / 100).toFixed(2))
             }
-            if (data?.ORP?.length > 0) {
-              setORP(data.ORP[0][1])
+            if (data?.humidity?.length > 0) {
+              setHumidity(data.humidity[0][1])
             }
-            if (data?.TUR?.length > 0) {
-              setTUR(data.TUR[0][1])
+            if (data?.soil?.length > 0) {
+              setSoil(data.soil[0][1])
             }
-            if (data?.EC?.length > 0) {
-              setEC(data.EC[0][1])
+            if (data?.light?.length > 0) {
+              setLight(data.light[0][1])
             }
           }
 
@@ -201,7 +202,7 @@ export function Footer() {
           <div>
             <Switch id="airplane-mode" checked={switchState} onCheckedChange={handleSwitch} />
             <Label htmlFor="airplane-mode">
-              Pump State: {switchState ? 'On' : 'Off'} Mode
+              Relay State: {switchState ? 'On' : 'Off'} Mode
             </Label>
           </div>
         </div>
@@ -242,38 +243,38 @@ export function Footer() {
         >
           <SwiperSlide>
             <Card
-              title="pH"
+              title="Temperature"
               icon={<Icons.droplet />}
-              value={pH}
-              unit={''}
-              texts={['', 'Seawater PH', '']}
+              value={temperature}
+              unit={'oC'}
+              texts={['', 'Temperature', '']}
             />
           </SwiperSlide>
           <SwiperSlide>
             <Card
-              title="ORP"
+              title="Humidity"
               icon={<Icons.gauge />}
-              value={ORP}
-              unit={'mV'}
-              texts={['', 'Seawater Oxidation-reduction Potential', '']}
+              value={humidity}
+              unit={'%'}
+              texts={['', 'Humidity', '']}
             />
           </SwiperSlide>
           <SwiperSlide>
             <Card
-              title="TUR"
+              title="Soil Moisture"
               icon={<Icons.cloudRain />}
-              value={TUR}
-              unit={'NTU'}
-              texts={['', 'Seawater Turbidity', '']}
+              value={soil}
+              unit={'%'}
+              texts={['', 'Soil Moisture', '']}
             />
           </SwiperSlide>
           <SwiperSlide>
             <Card
-              title="EC"
+              title="Light"
               icon={<Icons.temperature />}
-              value={EC}
-              unit={'μS/cm'}
-              texts={['', 'Seawater Electrical Conductivity', '']}
+              value={light}
+              unit={'LUX'}
+              texts={['', 'Light Intensity', '']}
             />
           </SwiperSlide>
         </Swiper>
